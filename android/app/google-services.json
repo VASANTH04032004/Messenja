@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1011108501639",
+    "project_id": "messenja-7496d",
+    "storage_bucket": "messenja-7496d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011108501639:android:9bbe10985044fe5c01c022",
+        "android_client_info": {
+          "package_name": "com.example.messenger"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEdg6-FBzP2xjMm-QUosN_NARsLW6snG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
