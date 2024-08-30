@@ -4,15 +4,13 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../controllers/auth_controller.dart';
 
-class PhoneInputScreen extends StatelessWidget {
-  final AuthController _authController = Get.find();
-
+class PhoneInputScreen extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Enter Phone Number'),
-        backgroundColor: Colors.blue, // Set AppBar color to blue
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -20,7 +18,7 @@ class PhoneInputScreen extends StatelessWidget {
           children: [
             InternationalPhoneNumberInput(
               onInputChanged: (PhoneNumber number) {
-                _authController.phoneNumber.value = number.phoneNumber ?? '';
+                controller.phoneNumber.value = number.phoneNumber ?? '';
               },
               selectorConfig: SelectorConfig(
                 selectorType: PhoneInputSelectorType.DROPDOWN,
@@ -34,12 +32,14 @@ class PhoneInputScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _authController.verifyPhoneNumber();
-              },
-              child: Text('Verify'),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  controller.verifyPhoneNumber();
+                },
+                child: Text('Verify'),
+              ),
             ),
           ],
         ),

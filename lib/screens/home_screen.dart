@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeController extends GetxController {
+
+}
+
+class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Messager'),
-          backgroundColor: Colors.blue
+        title: Text('Messager'),
+        backgroundColor: Colors.blue,
       ),
       body: Stack(
         children: [
@@ -31,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             right: 16,
             child: ElevatedButton.icon(
               onPressed: () {
-                // Navigate to new chat screen or functionality
+                Get.to(() => NewConversationScreen());
               },
               icon: Icon(Icons.chat),
               label: Text('Start chat'),
@@ -43,8 +48,46 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class NewConversationScreen extends GetView<HomeController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New conversation'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Type a name, phone number, or email',
+                border: UnderlineInputBorder(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: ListTile(
+                leading: Icon(Icons.group_add, color: Colors.blue),
+                title: Text('Create group'),
+                onTap: () {
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 void main() {
-  runApp(MaterialApp(
-    home: HomeScreen(),
-  ));
+  runApp(
+    GetMaterialApp(
+      home: HomeScreen(),
+      initialBinding: BindingsBuilder(() {
+        Get.put(HomeController());
+      }),
+    ),
+  );
 }
