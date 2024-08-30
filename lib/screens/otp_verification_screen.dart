@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 
 import '../controllers/auth_controller.dart';
 
-class OTPVerificationScreen extends StatelessWidget {
-  final AuthController authController = Get.find();
+class OTPVerificationScreen extends GetView<AuthController> {
   final TextEditingController otpController = TextEditingController();
 
   @override
@@ -28,12 +27,12 @@ class OTPVerificationScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Obx(() => ElevatedButton(
-                onPressed: authController.isLoading.value
+                onPressed: controller.isLoading.value
                     ? null
                     : () {
-                  authController.verifyOTP(otpController.text);
+                  controller.verifyOTP(otpController.text);
                 },
-                child: authController.isLoading.value
+                child: controller.isLoading.value
                     ? CircularProgressIndicator()
                     : Text('Verify'),
               )),
