@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 
 import '../controllers/auth_controller.dart';
 
-class OTPVerificationScreen extends StatelessWidget {
-  final AuthController _authController = Get.find();
+class OTPVerificationScreen extends GetView<AuthController> {
   final TextEditingController otpController = TextEditingController();
 
   @override
@@ -25,17 +24,19 @@ class OTPVerificationScreen extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 20),
-            Obx(() => ElevatedButton(
-              onPressed: _authController.isLoading.value
-                  ? null
-                  : () {
-                _authController.verifyOTP(otpController.text);
-              },
-              child: _authController.isLoading.value
-                  ? CircularProgressIndicator()
-                  : Text('Verify'),
-            )),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Obx(() => ElevatedButton(
+                onPressed: controller.isLoading.value
+                    ? null
+                    : () {
+                  controller.verifyOTP(otpController.text);
+                },
+                child: controller.isLoading.value
+                    ? CircularProgressIndicator()
+                    : Text('Verify'),
+              )),
+            ),
           ],
         ),
       ),

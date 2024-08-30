@@ -10,7 +10,7 @@ void main() async {
 }
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends GetView {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
