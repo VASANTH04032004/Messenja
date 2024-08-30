@@ -7,6 +7,8 @@ class AuthController extends GetxController {
   RxString phoneNumber = ''.obs;
   RxString verificationId = ''.obs;
   RxBool isLoading = false.obs;
+  RxString otp = ''.obs;
+  int? resendToken;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -18,21 +20,25 @@ class AuthController extends GetxController {
         verificationCompleted: (PhoneAuthCredential credential) async {
           try {
             await _auth.signInWithCredential(credential);
-            Get.offAll(() => HomeScreen());
+            Get.offAll(() => HomeScreen()); 
           } catch (e) {
             Get.snackbar('Error', 'Failed to sign in: ${e.toString()}');
+            isLoading(false);
           }
         },
         verificationFailed: (FirebaseAuthException e) {
+
           Get.snackbar('Error', 'Verification failed: ${e.message ?? 'Unknown error'}');
           isLoading(false);
         },
-        codeSent: (String verId, int? resendToken) {
+        codeSent: (String verId, int? token) {
           verificationId.value = verId;
+          resendToken = token;
           isLoading(false);
           Get.to(() => OTPVerificationScreen());
         },
         codeAutoRetrievalTimeout: (String verId) {
+
           verificationId.value = verId;
         },
       );
@@ -41,6 +47,7 @@ class AuthController extends GetxController {
       isLoading(false);
     }
   }
+
 
   void verifyOTP(String smsCode) async {
     isLoading(true);
@@ -55,6 +62,41 @@ class AuthController extends GetxController {
       Get.offAll(() => HomeScreen());
     } catch (e) {
       Get.snackbar('Error', 'Failed to sign in: ${e.toString()}');
+      isLoading(false);
+    }
+  }
+
+
+  void resendOTP() async {
+    isLoading(true);
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber.value,
+        forceResendingToken: resendToken,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          try {
+            await _auth.signInWithCredential(credential);
+            Get.offAll(() => HomeScreen());
+          } catch (e) {
+            Get.snackbar('Error', 'Failed to sign in: ${e.toString()}');
+            isLoading(false);
+          }
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          Get.snackbar('Error', 'Verification failed: ${e.message ?? 'Unknown error'}');
+          isLoading(false);
+        },
+        codeSent: (String verId, int? token) {
+          verificationId.value = verId;
+          resendToken = token;
+          isLoading(false);
+        },
+        codeAutoRetrievalTimeout: (String verId) {
+          verificationId.value = verId;
+        },
+      );
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to resend verification code: ${e.toString()}');
       isLoading(false);
     }
   }
