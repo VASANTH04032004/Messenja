@@ -22,7 +22,6 @@ void main() async {
 
 
 class MyApp extends GetView {
-class MyApp extends StatelessWidget {
   final FirebaseAnalytics analytics;
 
   MyApp({required this.analytics});
