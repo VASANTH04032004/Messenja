@@ -50,14 +50,16 @@ class OTPVerificationScreen extends GetView<AuthController> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: GestureDetector(
-                onTap: controller.isLoading.value ? null : () {
+                onTap: controller.isLoading.value
+                    ? null
+                    : () {
                   controller.resendOTP();
                 },
                 child: Text(
                   'Resend Code',
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.blue, // Set 'Resend Code' text color to blue
+                    color: Colors.blue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -65,25 +67,27 @@ class OTPVerificationScreen extends GetView<AuthController> {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Obx(() => ElevatedButton(
-                onPressed: controller.isLoading.value
-                    ? null
-                    : () {
-                  controller.verifyOTP(controller.otp.value);
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  backgroundColor: Colors.blue, // Set 'Verify' button color to blue
-                ),
-                child: controller.isLoading.value
-                    ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                )
-                    : Text(
-                  'Verify',
-                  style: TextStyle(color: Colors.white), // Set 'Verify' text color to white
-                ),
-              )),
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  );
+                } else {
+                  return ElevatedButton(
+                    onPressed: () {
+                      controller.verifyOTP(controller.otp.value);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 50),
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: Text(
+                      'Verify',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+              }),
             ),
           ],
         ),
