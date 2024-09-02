@@ -18,30 +18,48 @@ class PhoneInputScreen extends GetView<AuthController> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 2),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: InternationalPhoneNumberInput(
-                  onInputChanged: (PhoneNumber number) {
-                    controller.phoneNumber.value = number.phoneNumber ?? '';
-                  },
-                  selectorConfig: SelectorConfig(
-                    selectorType: PhoneInputSelectorType.DIALOG,
-                    showFlags: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mobile Number:',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  ignoreBlank: false,
-                  autoValidateMode: AutovalidateMode.disabled,
-                  initialValue: PhoneNumber(isoCode: 'IN'),
-                  formatInput: true,
-                  inputDecoration: InputDecoration(
-                    labelText: 'Mobile Number',
-                    labelStyle: TextStyle(color: Colors.blue),
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 2),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InternationalPhoneNumberInput(
+                            onInputChanged: (PhoneNumber number) {
+                              controller.phoneNumber.value = number.phoneNumber ?? '';
+                            },
+                            selectorConfig: SelectorConfig(
+                              selectorType: PhoneInputSelectorType.DIALOG,
+                              showFlags: false,
+                            ),
+                            ignoreBlank: false,
+                            autoValidateMode: AutovalidateMode.disabled,
+                            initialValue: PhoneNumber(isoCode: 'IN'),
+                            formatInput: true,
+                            inputDecoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
             Obx(() => controller.isLoading.value

@@ -16,14 +16,6 @@ class HomeScreen extends GetView {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.message, size: 100, color: Colors.blue),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                    "Once you start a new conversation, you'll see it listed here",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
               ],
             ),
           ),
