@@ -1,18 +1,19 @@
 import 'package:get/get.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class NotificationController extends GetxController {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  final FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.instance;
 
   @override
   void onInit() {
     super.onInit();
-    _initializeFCM();
+    initializeFCM();
   }
 
-  void _initializeFCM() async {
-
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+  void initializeFCM() async {
+    NotificationSettings settings = await firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -30,7 +31,7 @@ class NotificationController extends GetxController {
       print('User declined or has not accepted permission');
     }
 
-    String? token = await _firebaseMessaging.getToken();
+    String? token = await firebaseMessaging.getToken();
     print("FCM Token: $token");
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -41,6 +42,15 @@ class NotificationController extends GetxController {
           message.notification!.body ?? '',
         );
       }
+
+      firebaseAnalytics.logEvent(
+        name: 'message_received',
+        parameters: {
+          'message_id': message.messageId ?? '',
+          'message_title': message.notification?.title ?? '',
+          'message_body': message.notification?.body ?? '',
+        },
+      );
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
