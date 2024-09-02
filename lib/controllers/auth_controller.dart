@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'notification_controller.dart';
 import '../screens/home_screen.dart';
 import '../screens/otp_verification_screen.dart';
 
@@ -10,17 +11,23 @@ class AuthController extends GetxController {
   RxString otp = ''.obs;
   int? resendToken;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void onInit() {
+    super.onInit();
+    Get.put(NotificationController());
+  }
 
   void verifyPhoneNumber() async {
     isLoading(true);
     try {
-      await _auth.verifyPhoneNumber(
+      await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber.value,
         verificationCompleted: (PhoneAuthCredential credential) async {
           try {
-            await _auth.signInWithCredential(credential);
-            Get.offAll(() => HomeScreen()); 
+            await auth.signInWithCredential(credential);
+            Get.offAll(() => HomeScreen());
           } catch (e) {
             Get.snackbar('Error', 'Failed to sign in: ${e.toString()}');
             isLoading(false);
@@ -57,7 +64,7 @@ class AuthController extends GetxController {
     );
 
     try {
-      await _auth.signInWithCredential(credential);
+      await auth.signInWithCredential(credential);
       Get.snackbar('Success', 'Congratulations! Successfully logged in');
       Get.offAll(() => HomeScreen());
     } catch (e) {
@@ -66,16 +73,15 @@ class AuthController extends GetxController {
     }
   }
 
-
   void resendOTP() async {
     isLoading(true);
     try {
-      await _auth.verifyPhoneNumber(
+      await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber.value,
         forceResendingToken: resendToken,
         verificationCompleted: (PhoneAuthCredential credential) async {
           try {
-            await _auth.signInWithCredential(credential);
+            await auth.signInWithCredential(credential);
             Get.offAll(() => HomeScreen());
           } catch (e) {
             Get.snackbar('Error', 'Failed to sign in: ${e.toString()}');
